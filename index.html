@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDUPEAK - Learning Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+    <div class="container" id="login-container">
+        <div class="login-box">
+            <div class="logo">
+                <img src="logo.png" alt="CM with MN Logo">
+            </div>
+            <h2>Combined Maths - Madushan Neranjan</h2>
+            <p class="subtitle">ඉහළ අගයක් ඇති ඔබේ අනාගතයට පිවිසෙන්න</p>
+            
+            <div class="login-options">
+                <button id="google-login" class="login-btn">
+                    <img src="google-icon.png" alt="Google Icon">
+                    Continue with Google
+                </button>
+                <p class="admin-login-link">Are you an admin? <a href="#" id="admin-login-link">Login here</a></p>
+            </div>
+            
+            <div class="help-links">
+                <a href="#">How to Register?</a>
+                <p>Hotline Contact: </p>
+                <p class="powered-by">Powered by Navadeep.Dev</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="admin-login-container" style="display: none;">
+        <div class="login-box">
+            <div class="logo">
+                <img src="logo.png" alt="CM with MN Logo">
+            </div>
+            <h2>Admin Login</h2>
+            
+            <div class="admin-login-form">
+                <input type="password" id="admin-password" placeholder="Enter admin password">
+                <button id="admin-login-btn" class="login-btn">Login</button>
+                <p class="back-to-login"><a href="#" id="back-to-login-link">Back to student login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Dashboard -->
+    <div id="student-dashboard" style="display: none;">
+        <header>
+            <div class="header-content">
+                <h1>A/L 2026</h1>
+                <button id="logout-btn">Logout</button>
+            </div>
+        </header>
+        
+        <div class="dashboard-container">
+            <nav class="sidebar">
+                <div class="search-box">
+                    <input type="text" placeholder="Search...">
+                </div>
+                <ul class="menu">
+                    <li><a href="#"><span class="icon">📚</span> My Lessons</a></li>
+                    <li><a href="#"><span class="icon">📅</span> A/L 2027</a></li>
+                    <li><a href="#" class="active"><span class="icon">📅</span> A/L 2026</a></li>
+                    <li><a href="#"><span class="icon">📅</span> A/L 2025</a></li>
+                    <li><a href="#"><span class="icon">🎬</span> AL Video Modules</a></li>
+                    <li><a href="#"><span class="icon">🔄</span> GIT</a></li>
+                    <li><a href="#"><span class="icon">📝</span> O/L Courses</a></li>
+                    <li><a href="#"><span class="icon">💻</span> Practical Sessions</a></li>
+                    <li><a href="#"><span class="icon">📋</span> Tutes</a></li>
+                    <li><a href="#"><span class="icon">📄</span> Past Papers</a></li>
+                    <li><a href="#"><span class="icon">📑</span> PDFs</a></li>
+                    <li><a href="#"><span class="icon">💰</span> Payments & Socials</a></li>
+                </ul>
+            </nav>
+            
+            <main class="content">
+                <div class="welcome-header">
+                    <h2>Welcome to Your Learning Dashboard</h2>
+                    <p>Access your personalized lessons below</p>
+                </div>
+                <div id="lessons-container">
+                    <!-- Lessons will be dynamically loaded here -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-dashboard" class="admin-container" style="display: none;">
+        <div class="admin-header">
+            <h2>Admin Dashboard</h2>
+            <p>Manage students and assign lessons</p>
+        </div>
+        <div class="admin-grid">
+            <div class="admin-section">
+                <h3>Assign Lesson</h3>
+                <div class="form-group">
+                    <label for="student-email">Student Email</label>
+                    <input type="email" id="student-email" placeholder="Enter student email">
+                </div>
+                <div class="form-group">
+                    <label for="video-url">Video URL</label>
+                    <input type="url" id="video-url" placeholder="Enter YouTube video URL">
+                </div>
+                <div class="form-group">
+                    <label for="month">Month</label>
+                    <select id="month">
+                        <option value="">Select Month</option>
+                        <option value="january">January</option>
+                        <option value="february">February</option>
+                        <option value="march">March</option>
+                        <option value="april">April</option>
+                        <option value="may">May</option>
+                        <option value="june">June</option>
+                        <option value="july">July</option>
+                        <option value="august">August</option>
+                        <option value="september">September</option>
+                        <option value="october">October</option>
+                        <option value="november">November</option>
+                        <option value="december">December</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="year">Year</label>
+                    <input type="text" id="year" placeholder="Enter year (e.g., 2023)">
+                </div>
+                <div class="form-group">
+                    <label for="lesson-type">Lesson Type</label>
+                    <select id="lesson-type">
+                        <option value="">Select Type</option>
+                        <option value="theory">Theory</option>
+                        <option value="practical">Practical</option>
+                        <option value="revision">Revision</option>
+                    </select>
+                    <div class="custom-type-container" style="display: none;">
+                        <input type="text" id="custom-type-input" placeholder="Enter custom type">
+                        <button id="save-custom-type" class="small-btn">Save</button>
+                    </div>
+                    <button id="add-custom-type" class="small-btn">Add Custom</button>
+                </div>
+                <div class="form-group">
+                    <label for="lesson-description">Lesson Description</label>
+                    <textarea id="lesson-description" placeholder="Enter lesson description"></textarea>
+                </div>
+                <button id="assign-btn" class="btn-assign">Assign Lesson</button>
+            </div>
+            <div class="admin-section">
+                <h3>Students</h3>
+                <ul id="students-list" class="students-list">
+                    <!-- Student items will be dynamically added here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
